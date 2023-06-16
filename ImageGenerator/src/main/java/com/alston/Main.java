@@ -28,6 +28,9 @@ public class Main {
 
         Artist artist = new Artist();
         artist.drawVase(pallet.getPrimary(),pallet.getSecondary());
+        String stats = ("Stats: p-"+p+"/10 s-"+s+"/10");
+        artist.addStats(stats);
+        artist.drawImage();
 
 
     }
