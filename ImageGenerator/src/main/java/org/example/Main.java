@@ -27,7 +27,7 @@ public class Main {
 
         // create a circle with black
         g2d.setColor(Color.black);
-        g2d.fillOval(170,100, 160, 200);
+        g2d.fillOval(170,100, 160, 190);
 
         // create a string with yellow
         g2d.setColor(Color.yellow);
