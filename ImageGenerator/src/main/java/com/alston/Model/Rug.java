@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 public class Rug {
 
 
-    Shape primaryShape;
-    Shape secondaryShape;
-    Shape tertiaryShape;
+    String primaryShape;
+    String secondaryShape;
+    String tertiaryShape;
 
     Color primaryColor;
     Color secondaryColor;
@@ -19,12 +19,19 @@ public class Rug {
     public int height = 500;
     public int width = 300;
 
-    boolean fringe;
+    public Rug(
+            Color primaryColor, Color secondaryColor, Color tertiaryColor,
+            String primaryShape, String secondaryShape, String tertiaryShape){
+        this.primaryColor = primaryColor;
+        this.secondaryColor = secondaryColor;
+        this.tertiaryColor = tertiaryColor;
+        this.primaryShape = primaryShape;
+        this.secondaryShape = secondaryShape;
+        this.tertiaryShape = tertiaryShape;
+    }
 
-    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-
-    public  Rug(){
+    public BufferedImage getRug() {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, height);
@@ -32,9 +39,6 @@ public class Rug {
         g2d.fill(new MyTriangle().getShape());
 
         g2d.dispose();
-    }
-
-    public BufferedImage getBufferedImage() {
         return bufferedImage;
     }
 }

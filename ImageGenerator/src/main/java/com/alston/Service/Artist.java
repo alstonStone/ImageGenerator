@@ -8,17 +8,35 @@ import java.io.IOException;
 
 //An Artist takes parameters and generates an image
 public class Artist {
-    int width = 500;
-    int height = 300;
+    //image size
+    int width;
+    int height;
+    String primaryShape;
+    String secondaryShape;
+    String tertiaryShape;
 
-    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-    public Artist(){}
-    public Artist(int width, int height){
+    Color primaryColor;
+    Color secondaryColor;
+    Color tertiaryColor;
+    Pallet pallet = new Pallet();
+    ShapeService shapeService = new ShapeService();
+
+    BufferedImage bufferedImage;
+
+    public Artist(int width, int height,int[] numbers){
         this.width = width;
         this.height = height;
+        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        this.primaryColor = pallet.getColor(numbers[0]);
+        this.secondaryColor = pallet.getColor(numbers[1]);
+        this.tertiaryColor = pallet.getColor(numbers[2]);
+        this.primaryShape = shapeService.getShape(numbers[3]);
+        this.secondaryShape = shapeService.getShape(numbers[4]);
+        this.tertiaryShape = shapeService.getShape(numbers[5]);
+        addStats(numbers);
     }
 
-    public void drawImage() throws IOException {
+    public void saveImage() throws IOException {
         File file = new File("myimage.png");
         ImageIO.write(bufferedImage, "png", file);
     }
@@ -65,16 +83,29 @@ public class Artist {
         g2d.dispose();
     }
 
-    public void addStats(String text){
+    public void addStats(int[] numbers){
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, 20);
 
+        String text = "";
+
+        for(int i = numbers.length -1; i >=0; i--){
+            if((i+1)%3 == 0 && i!= numbers.length-1){
+                text = numbers[i]+"," + text;
+            }else{
+                text = numbers[i]+ text;
+            }
+
+        }
+        text = text + " / 1,000,000";
         g2d.setColor(Color.black);
-        g2d.drawString(text,0,10);
-
-
+        g2d.drawString(text,0,15);
         g2d.dispose();
+    }
+
+    public void drawRug(){
+
     }
 
 

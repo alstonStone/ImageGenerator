@@ -4,23 +4,11 @@ import java.awt.*;
 
 public class Pallet {
 
-    private final Color primary;
-    private final Color secondary;
 
-    public Pallet(int p, int s){
-        this.primary = getColor(p);
-        this.secondary = getColor(s);
-    }
 
-    public Color getPrimary(){
-        return this.primary;
-    }
+    public Pallet(){}
 
-    public Color getSecondary(){
-        return this.secondary;
-    }
-
-    private Color getColor(int index){
+    public Color getColor(int index){
         Color color = Color.BLACK;
         switch(index) {
             case 0:
