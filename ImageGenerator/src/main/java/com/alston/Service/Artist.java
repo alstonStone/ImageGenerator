@@ -6,14 +6,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+//An Artist takes parameters and generates an image
 public class Artist {
     int width = 500;
     int height = 300;
 
     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-    public Artist(){
-
+    public Artist(){}
+    public Artist(int width, int height){
+        this.width = width;
+        this.height = height;
     }
 
     public void drawImage() throws IOException {
