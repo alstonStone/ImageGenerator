@@ -1,22 +1,44 @@
 package com.alston.Service;
 
+import com.alston.Model.Shapes.MyTriangle;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+//An Artist takes parameters and generates an image
 public class Artist {
-    int width = 500;
-    int height = 300;
+    //image size
+    int width;
+    int height;
+    String primaryShape;
+    String secondaryShape;
+    String tertiaryShape;
 
-    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    Color primaryColor;
+    Color secondaryColor;
+    Color tertiaryColor;
+    Pallet pallet = new Pallet();
+    ShapeService shapeService = new ShapeService();
 
-    public Artist(){
+    BufferedImage bufferedImage;
 
+    public Artist(int width, int height,int[] numbers){
+        this.width = width;
+        this.height = height;
+        bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        this.primaryColor = pallet.getColor(numbers[0]);
+        this.secondaryColor = pallet.getColor(numbers[1]);
+        this.tertiaryColor = pallet.getColor(numbers[2]);
+        this.primaryShape = shapeService.getShape(numbers[3]);
+        this.secondaryShape = shapeService.getShape(numbers[4]);
+        this.tertiaryShape = shapeService.getShape(numbers[5]);
+        addStats(numbers);
     }
 
-    public void drawImage() throws IOException {
+    public void saveImage() throws IOException {
         File file = new File("myimage.png");
         ImageIO.write(bufferedImage, "png", file);
     }
@@ -63,16 +85,70 @@ public class Artist {
         g2d.dispose();
     }
 
-    public void addStats(String text){
+    public void addStats(int[] numbers){
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, 20);
 
+        String text = "";
+
+        for(int i = numbers.length -1; i >=0; i--){
+            if((i+1)%3 == 0 && i!= numbers.length-1){
+                text = numbers[i]+"," + text;
+            }else{
+                text = numbers[i]+ text;
+            }
+
+        }
+        text = text + " / 1,000,000";
         g2d.setColor(Color.black);
-        g2d.drawString(text,0,10);
-
-
+        g2d.drawString(text,0,15);
         g2d.dispose();
+    }
+
+    public void drawRug(){
+        // Create a graphics which can be used to draw into the buffered image
+        Graphics2D g2d = bufferedImage.createGraphics();
+
+        int rugWidth = 250;
+        int rugHeight = 450;
+
+        int xOrigin = (width - rugWidth) / 2;
+        int yOrigin = ((height-rugHeight)/ 2) + 10; //+20 for the stats offset / 2
+
+        //draw base
+        g2d.setColor(primaryColor);
+        g2d.fillRect(xOrigin,yOrigin,rugWidth,rugHeight);
+
+        //TODO change hard coded values to new passed in values
+        int triangleWidth = 50;
+        int triangleHeight = 50;
+
+        int xSpaces = rugWidth / triangleWidth;
+        int ySpaces = rugHeight / triangleHeight;
+
+        //draw shape
+        g2d.setColor(secondaryColor);
+        if(primaryShape.equals("TRIANGLE")){
+
+
+            for(int y = yOrigin; y< rugHeight; y+=triangleHeight){
+                for(int x=xOrigin; x< rugWidth; x+=triangleWidth){
+                    g2d.fill(new MyTriangle(x,y).getShape());
+                }
+            }
+
+
+        }
+
+        //draw shape
+        g2d.setColor(tertiaryColor);
+
+
+
+
+
+
     }
 
 
