@@ -1,5 +1,7 @@
 package com.alston.Service;
 
+import com.alston.Model.Shapes.MyTriangle;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -105,6 +107,47 @@ public class Artist {
     }
 
     public void drawRug(){
+        // Create a graphics which can be used to draw into the buffered image
+        Graphics2D g2d = bufferedImage.createGraphics();
+
+        int rugWidth = 250;
+        int rugHeight = 450;
+
+        int xOrigin = (width - rugWidth) / 2;
+        int yOrigin = ((height-rugHeight)/ 2) + 10; //+20 for the stats offset / 2
+
+        //draw base
+        g2d.setColor(primaryColor);
+        g2d.fillRect(xOrigin,yOrigin,rugWidth,rugHeight);
+
+        //TODO change hard coded values to new passed in values
+        int triangleWidth = 50;
+        int triangleHeight = 50;
+
+        int xSpaces = rugWidth / triangleWidth;
+        int ySpaces = rugHeight / triangleHeight;
+
+        //draw shape
+        g2d.setColor(secondaryColor);
+        if(primaryShape.equals("TRIANGLE")){
+
+
+            for(int y = yOrigin; y< rugHeight; y+=triangleHeight){
+                for(int x=xOrigin; x< rugWidth; x+=triangleWidth){
+                    g2d.fill(new MyTriangle(x,y).getShape());
+                }
+            }
+
+
+        }
+
+        //draw shape
+        g2d.setColor(tertiaryColor);
+
+
+
+
+
 
     }
 

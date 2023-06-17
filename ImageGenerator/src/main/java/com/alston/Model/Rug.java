@@ -36,7 +36,7 @@ public class Rug {
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, height);
         g2d.setColor(Color.black);
-        g2d.fill(new MyTriangle().getShape());
+        g2d.fill(new MyTriangle(0,0).getShape());
 
         g2d.dispose();
         return bufferedImage;
