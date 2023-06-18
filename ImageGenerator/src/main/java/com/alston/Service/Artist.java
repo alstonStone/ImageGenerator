@@ -13,6 +13,7 @@ public class Artist {
     //image size
     int width;
     int height;
+    int[] numbers;
     String primaryShape;
     String secondaryShape;
     String tertiaryShape;
@@ -28,6 +29,7 @@ public class Artist {
     public Artist(int width, int height,int[] numbers){
         this.width = width;
         this.height = height;
+        this.numbers = numbers;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.primaryColor = pallet.getColor(numbers[0]);
         this.secondaryColor = pallet.getColor(numbers[1]);
@@ -35,7 +37,7 @@ public class Artist {
         this.primaryShape = shapeService.getShape(numbers[3]);
         this.secondaryShape = shapeService.getShape(numbers[4]);
         this.tertiaryShape = shapeService.getShape(numbers[5]);
-        addStats(numbers);
+
     }
 
     public void saveImage() throws IOException {
@@ -85,7 +87,7 @@ public class Artist {
         g2d.dispose();
     }
 
-    public void addStats(int[] numbers){
+    public void addStats(){
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, 20);
@@ -109,16 +111,12 @@ public class Artist {
     public void drawRug(){
         // Create a graphics which can be used to draw into the buffered image
         Graphics2D g2d = bufferedImage.createGraphics();
-
-        int rugWidth = 250;
-        int rugHeight = 450;
-
-        int xOrigin = (width - rugWidth) / 2;
-        int yOrigin = ((height-rugHeight)/ 2) + 10; //+20 for the stats offset / 2
+        int xOrigin = (width - width) / 2;
+        int yOrigin = ((height-height)/ 2) ; //+20 for the stats offset / 2
 
         //draw base
         g2d.setColor(primaryColor);
-        g2d.fillRect(xOrigin,yOrigin,rugWidth,rugHeight);
+        g2d.fillRect(xOrigin,yOrigin,width,height);
 
 
 
@@ -128,8 +126,8 @@ public class Artist {
             //TODO change hard coded values to new passed in values
             int triangleWidth = 50;
             int triangleHeight = 50;
-            int xSpaces = rugWidth / triangleWidth;
-            int ySpaces = rugHeight / triangleHeight;
+            int xSpaces = width / triangleWidth;
+            int ySpaces = height / triangleHeight;
             for(int y = 0; y < ySpaces; y++){
                 if(y%2==0){
                     int yPos = (y * triangleHeight)+yOrigin;
@@ -147,8 +145,8 @@ public class Artist {
             //TODO change hard coded values to new passed in values
             int triangleWidth = 50;
             int triangleHeight = 50;
-            int xSpaces = rugWidth / triangleWidth;
-            int ySpaces = rugHeight / triangleHeight;
+            int xSpaces = width / triangleWidth;
+            int ySpaces = height / triangleHeight;
             for(int y = 0; y < ySpaces; y++){
                 if(y%2!=0){
                     int yPos = (y * triangleHeight)+yOrigin;

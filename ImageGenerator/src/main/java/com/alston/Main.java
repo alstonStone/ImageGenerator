@@ -22,9 +22,13 @@ public class Main {
         for(Integer i: rnj.getNumbers()){
             System.out.print(i+" ");
         }
+        //for testing
+        int[] testingNumbers = new int[]{7,1,1,0,0,0};
+        Artist artist = new Artist(300*3,600*3,testingNumbers);
 
-        Artist artist = new Artist(300,500, rnj.getNumbers());
+//        Artist artist = new Artist(300,500, rnj.getNumbers());
         artist.drawRug();
+        artist.addStats();
         artist.saveImage();
 
 
