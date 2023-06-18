@@ -53,7 +53,6 @@ public class Artist {
     public void drawVase(){
        // Create a graphics which can be used to draw into the buffered image
         Graphics2D g2d = bufferedImage.createGraphics();
-        g2d.
         // fill all the image with white
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, height);
