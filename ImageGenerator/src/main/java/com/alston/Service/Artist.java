@@ -128,10 +128,8 @@ public class Artist {
             //TODO change hard coded values to new passed in values
             int triangleWidth = 50;
             int triangleHeight = 50;
-
             int xSpaces = rugWidth / triangleWidth;
             int ySpaces = rugHeight / triangleHeight;
-
             for(int y = 1; y < ySpaces; y++){
                 if(y%2==0){
                     int yPos = y * triangleHeight;
@@ -139,23 +137,29 @@ public class Artist {
                         int xPos = x * triangleWidth;
                         g2d.fill(new MyTriangle(xPos,yPos).getShapeUpsideDown());
                     }
-
                 }
-
             }
-
-
-//            for(int y = yOrigin; y< rugHeight; y+=triangleHeight){
-//                for(int x=xOrigin; x< rugWidth; x+=triangleWidth){
-//                    g2d.fill(new MyTriangle(x,y).getShapeUpsideDown());
-//                }
-//            }
-
-
         }
 
         //draw shape
         g2d.setColor(tertiaryColor);
+        if(secondaryShape.equals("TRIANGLE")){
+            //TODO change hard coded values to new passed in values
+            int triangleWidth = 50;
+            int triangleHeight = 50;
+            int xSpaces = rugWidth / triangleWidth;
+            int ySpaces = rugHeight / triangleHeight;
+            for(int y = 1; y < ySpaces; y++){
+                if(y%2!=0){
+                    int yPos = y * triangleHeight;
+                    for(int x = 1; x < xSpaces; x++){
+                        int xPos = x * triangleWidth;
+                        g2d.fill(new MyTriangle(xPos,yPos).getShapeUpsideDown());
+                    }
+                }
+            }
+        }
+
 
 
 
