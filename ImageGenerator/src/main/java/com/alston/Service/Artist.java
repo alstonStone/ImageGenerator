@@ -14,29 +14,34 @@ public class Artist {
     int width;
     int height;
     int[] numbers;
-    String primaryShape;
-    String secondaryShape;
-    String tertiaryShape;
+    int primaryShape;
+    int secondaryShape;
+    int tertiaryShape;
 
+    Color backGroundColor;
     Color primaryColor;
     Color secondaryColor;
     Color tertiaryColor;
     Pallet pallet = new Pallet();
-    ShapeService shapeService = new ShapeService();
+
+    ShapeFactory shapeFactory = new ShapeFactory();
 
     BufferedImage bufferedImage;
+    Graphics2D g2d;
 
     public Artist(int width, int height,int[] numbers){
         this.width = width;
         this.height = height;
         this.numbers = numbers;
         bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        g2d = bufferedImage.createGraphics();
         this.primaryColor = pallet.getColor(numbers[0]);
         this.secondaryColor = pallet.getColor(numbers[1]);
         this.tertiaryColor = pallet.getColor(numbers[2]);
-        this.primaryShape = shapeService.getShape(numbers[3]);
-        this.secondaryShape = shapeService.getShape(numbers[4]);
-        this.tertiaryShape = shapeService.getShape(numbers[5]);
+        this.backGroundColor = pallet.getColor(numbers[3]);
+        this.primaryShape = numbers[4];
+        this.secondaryShape = numbers[5];
+        this.tertiaryShape = numbers[6];
 
     }
 
@@ -48,6 +53,7 @@ public class Artist {
     public void drawVase(){
        // Create a graphics which can be used to draw into the buffered image
         Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.
         // fill all the image with white
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, height);
@@ -110,58 +116,45 @@ public class Artist {
 
     public void drawRug(){
         // Create a graphics which can be used to draw into the buffered image
-        Graphics2D g2d = bufferedImage.createGraphics();
         int xOrigin = (width - width) / 2;
-        int yOrigin = ((height-height)/ 2) ; //+20 for the stats offset / 2
+        int yOrigin = (height - height) / 2;
 
         //draw base
-        g2d.setColor(primaryColor);
+        g2d.setColor(backGroundColor);
         g2d.fillRect(xOrigin,yOrigin,width,height);
 
+        //draw primary shape
+        g2d.setColor(primaryColor);
+        int shapeWidth = 50;
+        int shapeHeight = 50;
+        int xSpaces = width / shapeWidth;
+        int ySpaces = height / shapeHeight;
+        for(int y = 0; y < ySpaces; y+=3){
+            int yPos = (y * shapeHeight)+yOrigin;
+            for(int x = 0; x < xSpaces; x++){
+                int xPos = (x * shapeWidth) + xOrigin;
+                g2d.fill(shapeFactory.getShape(xPos,yPos,primaryShape));
+            }
 
-
+        }
         //draw shape
         g2d.setColor(secondaryColor);
-        if(primaryShape.equals("TRIANGLE")){
-            //TODO change hard coded values to new passed in values
-            int triangleWidth = 50;
-            int triangleHeight = 50;
-            int xSpaces = width / triangleWidth;
-            int ySpaces = height / triangleHeight;
-            for(int y = 0; y < ySpaces; y++){
-                if(y%2==0){
-                    int yPos = (y * triangleHeight)+yOrigin;
-                    for(int x = 0; x < xSpaces; x++){
-                        int xPos = (x * triangleWidth) + xOrigin;
-                        g2d.fill(new MyTriangle(xPos,yPos).getShapeUpsideDown());
-                    }
-                }
+        for(int y = 1; y < ySpaces; y+=3){
+            int yPos = (y * shapeHeight)+yOrigin;
+            for(int x = 0; x < xSpaces; x++){
+                int xPos = (x * shapeWidth) + xOrigin;
+                g2d.fill(shapeFactory.getShape(xPos,yPos,secondaryShape));
             }
         }
-
         //draw shape
         g2d.setColor(tertiaryColor);
-        if(secondaryShape.equals("TRIANGLE")){
-            //TODO change hard coded values to new passed in values
-            int triangleWidth = 50;
-            int triangleHeight = 50;
-            int xSpaces = width / triangleWidth;
-            int ySpaces = height / triangleHeight;
-            for(int y = 0; y < ySpaces; y++){
-                if(y%2!=0){
-                    int yPos = (y * triangleHeight)+yOrigin;
-                    for(int x = 0; x < xSpaces; x++){
-                        int xPos = (x * triangleWidth) + xOrigin;
-                        g2d.fill(new MyTriangle(xPos,yPos).getShape());
-                    }
-                }
+        for(int y = 2; y < ySpaces; y+=3){
+            int yPos = (y * shapeHeight)+yOrigin;
+            for(int x = 0; x < xSpaces; x++){
+                int xPos = (x * shapeWidth) + xOrigin;
+                g2d.fill(shapeFactory.getShape(xPos,yPos,tertiaryShape));
             }
         }
-
-
-
-
-
 
 
     }

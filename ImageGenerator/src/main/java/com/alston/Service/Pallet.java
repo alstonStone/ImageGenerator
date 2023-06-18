@@ -4,8 +4,6 @@ import java.awt.*;
 
 public class Pallet {
 
-
-
     public Pallet(){}
 
     public Color getColor(int index){
