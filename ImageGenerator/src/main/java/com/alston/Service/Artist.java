@@ -130,11 +130,11 @@ public class Artist {
             int triangleHeight = 50;
             int xSpaces = rugWidth / triangleWidth;
             int ySpaces = rugHeight / triangleHeight;
-            for(int y = 1; y < ySpaces; y++){
+            for(int y = 0; y < ySpaces; y++){
                 if(y%2==0){
-                    int yPos = y * triangleHeight;
-                    for(int x = 1; x < xSpaces; x++){
-                        int xPos = x * triangleWidth;
+                    int yPos = (y * triangleHeight)+yOrigin;
+                    for(int x = 0; x < xSpaces; x++){
+                        int xPos = (x * triangleWidth) + xOrigin;
                         g2d.fill(new MyTriangle(xPos,yPos).getShapeUpsideDown());
                     }
                 }
@@ -149,12 +149,12 @@ public class Artist {
             int triangleHeight = 50;
             int xSpaces = rugWidth / triangleWidth;
             int ySpaces = rugHeight / triangleHeight;
-            for(int y = 1; y < ySpaces; y++){
+            for(int y = 0; y < ySpaces; y++){
                 if(y%2!=0){
-                    int yPos = y * triangleHeight;
-                    for(int x = 1; x < xSpaces; x++){
-                        int xPos = x * triangleWidth;
-                        g2d.fill(new MyTriangle(xPos,yPos).getShapeUpsideDown());
+                    int yPos = (y * triangleHeight)+yOrigin;
+                    for(int x = 0; x < xSpaces; x++){
+                        int xPos = (x * triangleWidth) + xOrigin;
+                        g2d.fill(new MyTriangle(xPos,yPos).getShape());
                     }
                 }
             }
