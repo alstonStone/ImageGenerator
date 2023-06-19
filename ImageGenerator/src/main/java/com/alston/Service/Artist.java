@@ -3,6 +3,8 @@ package com.alston.Service;
 import com.alston.Model.Shapes.MyTriangle;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,10 +15,13 @@ public class Artist {
     //image size
     int width;
     int height;
+    int shapeWidth = 50;
+    int shapeHeight = 50;
     int[] numbers;
     int primaryShape;
     int secondaryShape;
     int tertiaryShape;
+    int numShapes = 3;
 
     Color backGroundColor;
     Color primaryColor;
@@ -46,8 +51,45 @@ public class Artist {
     }
 
     public void saveImage() throws IOException {
-        File file = new File("myimage.png");
+        File file = new File("pattern.png");
         ImageIO.write(bufferedImage, "png", file);
+    }
+    public void makeGif() throws IOException {
+        int numFrames = 6;
+        BufferedImage[] frames = new BufferedImage[numFrames];
+        int yShift = 25;
+        for(int i = 0; i < numFrames; i++){
+            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames*yShift));
+        }
+        BufferedImage first = frames[0];
+        ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+
+        GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), 150, true);
+        writer.writeToSequence(first);
+        for (int i = numFrames-1; i >0 ; i--) {
+            BufferedImage next = frames[i];
+            writer.writeToSequence(next);
+        }
+        writer.close();
+        output.close();
+    }
+    public void makeGif(int numFrames) throws IOException {
+        BufferedImage[] frames = new BufferedImage[numFrames];
+        int yShift = (numShapes * shapeHeight) / numFrames;
+        for(int i = 0; i < numFrames; i++){
+            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames*yShift));
+        }
+        BufferedImage first = frames[0];
+        ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+
+        GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), (1000 / numFrames), true);
+        writer.writeToSequence(first);
+        for (int i = numFrames-1; i >0 ; i--) {
+            BufferedImage next = frames[i];
+            writer.writeToSequence(next);
+        }
+        writer.close();
+        output.close();
     }
 
     public void drawVase(){
@@ -122,41 +164,41 @@ public class Artist {
         g2d.setColor(backGroundColor);
         g2d.fillRect(xOrigin,yOrigin,width,height);
 
-        //draw primary shape
-        g2d.setColor(primaryColor);
-        int shapeWidth = 50;
-        int shapeHeight = 50;
+        //draw shapes
         int xSpaces = width / shapeWidth;
         int ySpaces = height / shapeHeight;
-        for(int y = 0; y < ySpaces; y+=3){
+
+        for(int y = 0; y < ySpaces; y++){
+            int row = y % 3;
+            int shape;
+            Color color;
+            switch(row) {
+                case 0:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+                case 1:
+                    shape = secondaryShape;
+                    color = secondaryColor;
+                    break;
+                case 2:
+                    shape = tertiaryShape;
+                    color = tertiaryColor;
+                    break;
+                default:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+            }
             int yPos = (y * shapeHeight)+yOrigin;
+            g2d.setColor(color);
             for(int x = 0; x < xSpaces; x++){
                 int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,primaryShape));
-            }
-
-        }
-        //draw shape
-        g2d.setColor(secondaryColor);
-        for(int y = 1; y < ySpaces; y+=3){
-            int yPos = (y * shapeHeight)+yOrigin;
-            for(int x = 0; x < xSpaces; x++){
-                int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,secondaryShape));
+                g2d.fill(shapeFactory.getShape(xPos,yPos,shape));
             }
         }
-        //draw shape
-        g2d.setColor(tertiaryColor);
-        for(int y = 2; y < ySpaces; y+=3){
-            int yPos = (y * shapeHeight)+yOrigin;
-            for(int x = 0; x < xSpaces; x++){
-                int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,tertiaryShape));
-            }
-        }
-
-
     }
+
 
 
 
