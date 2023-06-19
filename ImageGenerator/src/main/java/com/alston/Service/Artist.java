@@ -122,40 +122,41 @@ public class Artist {
         g2d.setColor(backGroundColor);
         g2d.fillRect(xOrigin,yOrigin,width,height);
 
-        //draw primary shape
-        g2d.setColor(primaryColor);
+        //draw shapes
         int shapeWidth = 50;
         int shapeHeight = 50;
         int xSpaces = width / shapeWidth;
         int ySpaces = height / shapeHeight;
-        for(int y = 0; y < ySpaces; y+=3){
+
+        for(int y = 0; y < ySpaces; y++){
+            int row = y % 3;
+            int shape;
+            Color color;
+            switch(row) {
+                case 0:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+                case 1:
+                    shape = secondaryShape;
+                    color = secondaryColor;
+                    break;
+                case 2:
+                    shape = tertiaryShape;
+                    color = tertiaryColor;
+                    break;
+                default:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+            }
             int yPos = (y * shapeHeight)+yOrigin;
+            g2d.setColor(color);
             for(int x = 0; x < xSpaces; x++){
                 int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,primaryShape));
-            }
-
-        }
-        //draw shape
-        g2d.setColor(secondaryColor);
-        for(int y = 1; y < ySpaces; y+=3){
-            int yPos = (y * shapeHeight)+yOrigin;
-            for(int x = 0; x < xSpaces; x++){
-                int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,secondaryShape));
+                g2d.fill(shapeFactory.getShape(xPos,yPos,shape));
             }
         }
-        //draw shape
-        g2d.setColor(tertiaryColor);
-        for(int y = 2; y < ySpaces; y+=3){
-            int yPos = (y * shapeHeight)+yOrigin;
-            for(int x = 0; x < xSpaces; x++){
-                int xPos = (x * shapeWidth) + xOrigin;
-                g2d.fill(shapeFactory.getShape(xPos,yPos,tertiaryShape));
-            }
-        }
-
-
     }
 
 
