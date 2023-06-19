@@ -18,7 +18,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         RandomNumberJesus rnj = new RandomNumberJesus(7);//3colors + 3 shapes
-
         for(Integer i: rnj.getNumbers()){
             System.out.print(i+" ");
         }
@@ -30,9 +29,7 @@ public class Main {
         artist.drawRug();
         //artist.addStats();
         artist.saveImage();
-
-
-
+        artist.makeGif();
     }
 
 }

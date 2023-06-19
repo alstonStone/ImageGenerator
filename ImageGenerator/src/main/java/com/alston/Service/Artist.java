@@ -3,6 +3,8 @@ package com.alston.Service;
 import com.alston.Model.Shapes.MyTriangle;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +15,8 @@ public class Artist {
     //image size
     int width;
     int height;
+    int shapeWidth = 50;
+    int shapeHeight = 50;
     int[] numbers;
     int primaryShape;
     int secondaryShape;
@@ -46,8 +50,27 @@ public class Artist {
     }
 
     public void saveImage() throws IOException {
-        File file = new File("myimage.png");
+        File file = new File("pattern.png");
         ImageIO.write(bufferedImage, "png", file);
+    }
+    public void makeGif() throws IOException {
+        int numFrames = 6;
+        BufferedImage[] frames = new BufferedImage[numFrames];
+        int yShift = 25;
+        for(int i = 0; i < numFrames; i++){
+            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames * (shapeHeight * (6-1))));
+        }
+        BufferedImage first = frames[0];
+        ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+
+        GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), 150, true);
+        writer.writeToSequence(first);
+        for (int i = 1; i < numFrames; i++) {
+            BufferedImage next = frames[i];
+            writer.writeToSequence(next);
+        }
+        writer.close();
+        output.close();
     }
 
     public void drawVase(){
@@ -123,8 +146,6 @@ public class Artist {
         g2d.fillRect(xOrigin,yOrigin,width,height);
 
         //draw shapes
-        int shapeWidth = 50;
-        int shapeHeight = 50;
         int xSpaces = width / shapeWidth;
         int ySpaces = height / shapeHeight;
 
@@ -158,6 +179,7 @@ public class Artist {
             }
         }
     }
+
 
 
 
