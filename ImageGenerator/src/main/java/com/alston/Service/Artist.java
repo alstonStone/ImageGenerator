@@ -21,6 +21,7 @@ public class Artist {
     int primaryShape;
     int secondaryShape;
     int tertiaryShape;
+    int numShapes = 3;
 
     Color backGroundColor;
     Color primaryColor;
@@ -58,14 +59,32 @@ public class Artist {
         BufferedImage[] frames = new BufferedImage[numFrames];
         int yShift = 25;
         for(int i = 0; i < numFrames; i++){
-            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames * (shapeHeight * (6-1))));
+            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames*yShift));
         }
         BufferedImage first = frames[0];
         ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
 
         GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), 150, true);
         writer.writeToSequence(first);
-        for (int i = 1; i < numFrames; i++) {
+        for (int i = numFrames-1; i >0 ; i--) {
+            BufferedImage next = frames[i];
+            writer.writeToSequence(next);
+        }
+        writer.close();
+        output.close();
+    }
+    public void makeGif(int numFrames) throws IOException {
+        BufferedImage[] frames = new BufferedImage[numFrames];
+        int yShift = (numShapes * shapeHeight) / numFrames;
+        for(int i = 0; i < numFrames; i++){
+            frames[i] = bufferedImage.getSubimage(0,i * yShift,width,height-(numFrames*yShift));
+        }
+        BufferedImage first = frames[0];
+        ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+
+        GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), (1000 / numFrames), true);
+        writer.writeToSequence(first);
+        for (int i = numFrames-1; i >0 ; i--) {
             BufferedImage next = frames[i];
             writer.writeToSequence(next);
         }
