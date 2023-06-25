@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 //An Artist takes parameters and generates an image
 public class Artist {
@@ -49,10 +50,32 @@ public class Artist {
         this.tertiaryShape = numbers[6];
 
     }
-
+    public void resetImage(){
+        this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    }
     public void saveImage() throws IOException {
         File file = new File("pattern.png");
         ImageIO.write(bufferedImage, "png", file);
+    }
+    public void addStats(){
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, 0, width, 20);
+
+        String text = "";
+
+        for(int i = numbers.length -1; i >=0; i--){
+            if((i+1)%3 == 0 && i!= numbers.length-1){
+                text = numbers[i]+"," + text;
+            }else{
+                text = numbers[i]+ text;
+            }
+
+        }
+        text = text + " / 1,000,000";
+        g2d.setColor(Color.black);
+        g2d.drawString(text,0,15);
+        g2d.dispose();
     }
     public void makeGif() throws IOException {
         int numFrames = 6;
@@ -91,28 +114,6 @@ public class Artist {
         writer.close();
         output.close();
     }
-//    public void drawVase() {
-//        // Create a graphics which can be used to draw into the buffered image
-//        Graphics2D g2d = bufferedImage.createGraphics();
-//
-//        int xCenter = width / 2;
-//        int yCenter = height / 2;
-//        // vase body
-//        g2d.setColor(primaryColor);
-//        g2d.fillOval(170,100, 160, 190);
-//        g2d.setColor(Color.black);
-//        g2d.drawOval(170,100, 160, 190);
-//        //top of vase
-//        g2d.setColor(secondaryColor);
-//        g2d.fillOval(150,90, 200, 60);
-//        g2d.setColor(Color.black);
-//        g2d.drawOval(150,90, 200, 60);
-//        //shadow in vase
-//        g2d.setColor(primaryColor.darker());
-//        g2d.fillOval(200,110, 100, 30);
-//        // Disposes of this graphics context and releases any system resources that it is using.
-//        g2d.dispose();
-//    }
 
 
     public void drawVase() {
@@ -138,26 +139,7 @@ public class Artist {
         g2d.dispose();
     }
 
-    public void addStats(){
-        Graphics2D g2d = bufferedImage.createGraphics();
-        g2d.setColor(Color.white);
-        g2d.fillRect(0, 0, width, 20);
 
-        String text = "";
-
-        for(int i = numbers.length -1; i >=0; i--){
-            if((i+1)%3 == 0 && i!= numbers.length-1){
-                text = numbers[i]+"," + text;
-            }else{
-                text = numbers[i]+ text;
-            }
-
-        }
-        text = text + " / 1,000,000";
-        g2d.setColor(Color.black);
-        g2d.drawString(text,0,15);
-        g2d.dispose();
-    }
 
     public void drawRug(){
         // Create a graphics which can be used to draw into the buffered image
@@ -203,6 +185,71 @@ public class Artist {
         }
     }
 
+    public void drawTile(){
+        Random rand = new Random();
+        this.width = 400;
+        this.height = 400;
+        resetImage();
+
+        int tileWitdth = 100;
+        int tileHeight = 100;
+        BufferedImage tile = new BufferedImage(tileWitdth, tileHeight, BufferedImage.TYPE_INT_RGB);
+        g2d = tile.createGraphics();
+        g2d.setColor(backGroundColor);
+        g2d.fillRect(0,0,tileWitdth,tileHeight);
+
+
+
+        int shape;
+        Color color;
+        for(int i = 0; i < 3; i++){
+            switch(i) {
+                case 0:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+                case 1:
+                    shape = secondaryShape;
+                    color = secondaryColor;
+                    break;
+                case 2:
+                    shape = tertiaryShape;
+                    color = tertiaryColor;
+                    break;
+                default:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+            }
+            g2d.setColor(color);
+            int randTimes = rand.nextInt(2);
+            for(int j = 0; j < randTimes; j++){
+                int randX = rand.nextInt(80);
+                int randY = rand.nextInt(80);
+                g2d.fill(shapeFactory.getShape(randX,randY,shape));
+            }
+            g2d = bufferedImage.createGraphics();
+            this.bufferedImage = tile;
+
+        }
+
+    }
+
+    public static BufferedImage rotate(BufferedImage bimg, Double angle) {
+        double sin = Math.abs(Math.sin(Math.toRadians(angle))),
+                cos = Math.abs(Math.cos(Math.toRadians(angle)));
+        int w = bimg.getWidth();
+        int h = bimg.getHeight();
+        int neww = (int) Math.floor(w*cos + h*sin),
+                newh = (int) Math.floor(h*cos + w*sin);
+        BufferedImage rotated = new BufferedImage(neww, newh, bimg.getType());
+        Graphics2D graphic = rotated.createGraphics();
+        graphic.translate((neww-w)/2, (newh-h)/2);
+        graphic.rotate(Math.toRadians(angle), w/2, h/2);
+        graphic.drawRenderedImage(bimg, null);
+        graphic.dispose();
+        return rotated;
+    }
 
 
 

@@ -17,9 +17,10 @@ public class Main {
 //        Artist artist = new Artist(300*3,600*3,testingNumbers);
 
         Artist artist = new Artist(300*3,500*3, rnj.getNumbers());
-        artist.drawRug();
-        artist.drawVase();
+//        artist.drawRug();
+//        artist.drawVase();
         //artist.addStats();
+        artist.drawTile();
         artist.saveImage();
 //        artist.makeGif(50);
     }
