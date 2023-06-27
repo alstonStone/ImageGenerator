@@ -4,24 +4,17 @@ import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Camera;
-import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
-/**
- * @author afsal villan
- * @version 1.0
- *
- * http://www.genuinecoder.com
- */
+
 public class Rotation3DWithMouse extends Application {
 
     private static final int WIDTH = 1400;
@@ -112,23 +105,5 @@ public class Rotation3DWithMouse extends Application {
         launch(args);
     }
 
-    class SmartGroup extends Group {
 
-        Rotate r;
-        Transform t = new Rotate();
-
-        void rotateByX(int ang) {
-            r = new Rotate(ang, Rotate.X_AXIS);
-            t = t.createConcatenation(r);
-            this.getTransforms().clear();
-            this.getTransforms().addAll(t);
-        }
-
-        void rotateByY(int ang) {
-            r = new Rotate(ang, Rotate.Y_AXIS);
-            t = t.createConcatenation(r);
-            this.getTransforms().clear();
-            this.getTransforms().addAll(t);
-        }
-    }
 }
