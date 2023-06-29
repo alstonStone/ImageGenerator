@@ -16,12 +16,10 @@ public class Main {
 //        int[] testingNumbers = new int[]{0, 4, 2, 0, 9, 9, 9};
 //        Artist artist = new Artist(300*3,600*3,testingNumbers);
 
-        Artist artist = new Artist(300*3,500*3, rnj.getNumbers());
-//        artist.drawRug();
-//        artist.drawVase();
-        //artist.addStats();
-        artist.drawTile();
-        artist.saveImage();
+        Artist artist = new Artist(5400,7200, rnj.getNumbers());
+
+        artist.drawPoster();
+        artist.saveImageJpg("poster");
 //        artist.makeGif(50);
     }
 

@@ -57,6 +57,10 @@ public class Artist {
         File file = new File("pattern.png");
         ImageIO.write(bufferedImage, "png", file);
     }
+    public void saveImageJpg(String fileName) throws IOException {
+        File file = new File(fileName+".jpg");
+        ImageIO.write(bufferedImage, "jpg", file);
+    }
     public void addStats(){
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.setColor(Color.white);
@@ -143,12 +147,11 @@ public class Artist {
 
     public void drawRug(){
         // Create a graphics which can be used to draw into the buffered image
-        int xOrigin = (width - width) / 2;
-        int yOrigin = (height - height) / 2;
+
 
         //draw base
         g2d.setColor(backGroundColor);
-        g2d.fillRect(xOrigin,yOrigin,width,height);
+        g2d.fillRect(0,0,width,height);
 
         //draw shapes
         int xSpaces = width / shapeWidth;
@@ -176,62 +179,18 @@ public class Artist {
                     color = primaryColor;
                     break;
             }
-            int yPos = (y * shapeHeight)+yOrigin;
+            int yPos = (y * shapeHeight);
             g2d.setColor(color);
             for(int x = 0; x < xSpaces; x++){
-                int xPos = (x * shapeWidth) + xOrigin;
+                int xPos = (x * shapeWidth);
                 g2d.fill(shapeFactory.getShape(xPos,yPos,shape));
             }
         }
     }
 
-    public void drawTile(){
-        Random rand = new Random();
-        this.width = 400;
-        this.height = 400;
-        resetImage();
-
-        int tileWitdth = 100;
-        int tileHeight = 100;
-        BufferedImage tile = new BufferedImage(tileWitdth, tileHeight, BufferedImage.TYPE_INT_RGB);
-        g2d = tile.createGraphics();
-        g2d.setColor(backGroundColor);
-        g2d.fillRect(0,0,tileWitdth,tileHeight);
+    public void drawTile(int x, int y){
 
 
-
-        int shape;
-        Color color;
-        for(int i = 0; i < 3; i++){
-            switch(i) {
-                case 0:
-                    shape = primaryShape;
-                    color = primaryColor;
-                    break;
-                case 1:
-                    shape = secondaryShape;
-                    color = secondaryColor;
-                    break;
-                case 2:
-                    shape = tertiaryShape;
-                    color = tertiaryColor;
-                    break;
-                default:
-                    shape = primaryShape;
-                    color = primaryColor;
-                    break;
-            }
-            g2d.setColor(color);
-            int randTimes = rand.nextInt(2);
-            for(int j = 0; j < randTimes; j++){
-                int randX = rand.nextInt(80);
-                int randY = rand.nextInt(80);
-                g2d.fill(shapeFactory.getShape(randX,randY,shape));
-            }
-            g2d = bufferedImage.createGraphics();
-            this.bufferedImage = tile;
-
-        }
 
     }
 
@@ -251,6 +210,50 @@ public class Artist {
         return rotated;
     }
 
+    //makes 18x24 poseters at 5400 x 7200px res
+    public void drawPoster(){
+        this.width = 5400*5;
+        this.height = 7200*5;
+        //draw base
+        g2d.setColor(backGroundColor);
+        g2d.fillRect(0,0,width,height);
+
+        //draw shapes
+        int xSpaces = width / shapeWidth;
+        int ySpaces = height / shapeHeight;
+
+        for(int y = 0; y < ySpaces; y++){
+            int row = y % 3;
+            int shape;
+            Color color;
+            switch(row) {
+                case 0:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+                case 1:
+                    shape = secondaryShape;
+                    color = secondaryColor;
+                    break;
+                case 2:
+                    shape = tertiaryShape;
+                    color = tertiaryColor;
+                    break;
+                default:
+                    shape = primaryShape;
+                    color = primaryColor;
+                    break;
+            }
+            int yPos = (y * shapeHeight);
+            g2d.setColor(color);
+            for(int x = 0; x < xSpaces; x++){
+                int xPos = (x * shapeWidth);
+                g2d.fill(shapeFactory.getShape(xPos,yPos,shape));
+            }
+        }
+
+
+    }
 
 
 }
